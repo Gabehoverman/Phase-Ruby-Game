@@ -1,0 +1,103 @@
+
+<% @page_title = "Score" %>
+<script type="text/javascript" src="jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="jquery.tablesorter.js"></script> 
+<script type="text/javascript">
+$(document).ready(function() 
+    { 
+         $("#myTable").tablesorter( {sortList: [[0,0], [1,0]]} );
+
+    } 
+); 
+</script>
+
+
+<h2>Scores</h2>
+<table id="myTable" class="tablesorter">
+  <thead>
+    <tr>
+<!--       <th> ID </th>
+ -->     <th> Student ID </th>
+
+
+    
+      <th> Active Student? </th>
+      <th> Score ID </th>
+            <th> Chapter </th>
+            <th> Amount Correct </th>
+            <th> Amount Possible </th>
+             <th> Score </th>
+
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+ <% @students.each do |student| %>
+   
+<!--       <td><%= student.id %></td>
+ -->      <td><strong><%= student.student_id %></strong></td>
+      
+
+ <td> <strong><%if student.active == true %>
+        <p class="text-success"><%= 'Yes' %></p>
+         <% else %>
+         <p class="text-danger"><%= 'No' %></p>
+         <% end %></strong></td>
+
+<% scores = student.scores.select('*')%>
+<% count = 0 %>
+
+<% if scores.first == nil %>
+   <td><strong> -- </strong></td>
+   <td><strong> -- </strong></td>
+   <td><strong> -- </strong></td>
+   <td><strong> -- </strong></td>
+    <td><strong> -- </strong></td>
+<% end %> 
+
+ <% scores.each do |score| %>
+
+
+<% if count == 0 %>
+   <td><strong><%= score.id %></strong></td>
+      <td><strong><%= score.chapter_id %></strong></td>
+         <td><strong><%= score.is_value %></strong></td>
+            <td><strong><%= score.of_value %></strong></td>
+                <td><strong><%= score.final_score %> % </strong></td>
+<% else %>    
+<tr>
+<td><strong><%= student.student_id %></strong></td>
+      
+
+ <td> <strong><%if student.active == true %>
+        <p class="text-success"><%= 'Yes' %></p>
+         <% else %>
+         <p class="text-danger"><%= 'No' %></p>
+         <% end %></strong></td>
+
+   <td><strong><%= score.id %></strong></td>
+      <td><strong><%= score.chapter_id %></strong></td>
+         <td><strong><%= score.is_value %></strong></td>
+            <td><strong><%= score.of_value %></strong></td>
+                <td><strong><%= score.final_score %> % </strong></td>
+                </tr>
+<% end %>  
+           <% count = count +1 %>
+    
+                   
+      <% end %>
+
+<% count = 0 %>
+
+
+
+   </tr>
+    </tr>
+    <% end %>
+  </tbody>
+
+</table>
+
+
+
+<%= link_to("<< Back to  Reports", {:controller => :reports, :action => :student}, :class => "btn btn-primary") %>

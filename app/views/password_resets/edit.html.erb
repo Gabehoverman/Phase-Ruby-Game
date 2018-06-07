@@ -1,0 +1,35 @@
+    <div class="col-xs-4 col-xs-offset-4">
+
+<%= form_for @instructor, :url => password_reset_path(params[:id]) do |f| %>
+  <% if @instructor.errors.any? %>
+    <div class="error_messages">
+      <ul>
+        <% for message in @instructor.errors.full_messages %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <h2>Reset Password</h2>
+
+  <form role="form" summary="Password Reset">
+  <br />
+  <div class="form-group">
+    <%= f.label :password, "Password" %>
+      <br />
+    <%= f.password_field :password, :required => 'required' %>
+  </div>
+
+<div class="form-group">
+    <%= f.label :password_confirmation, "Confirm" %>
+      <br />
+    <%= f.password_field :password_confirmation, :required => 'required' %>
+  </div>
+      
+    <div class="actions"><%= f.submit "Update Password" %>
+</form>
+
+
+<% end %>
+  </div>

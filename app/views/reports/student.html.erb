@@ -1,0 +1,87 @@
+
+
+<!-- <div class="jumbotron">
+ --><h3>Reports</h3>
+
+  <div class="form-group">
+      <label for="chapter" class="col-lg-2 control-label"><h4>Score</h4></label>
+      <div class="col-lg-10">
+
+      <%= form_for(:score, :url => {:action => 'findscoreid' }) do |f| %>
+
+        <%= f.label("Score Id: " ) %>
+        <%= f.text_field(:score_id) %>
+<br />
+
+    <br />  
+
+       <%= submit_tag("Download Score Report", :class => "btn btn-warning") %> 
+       <%= submit_tag("View Score Report",  :class => "btn btn-warning btn-med") %>
+
+       <br />  
+  <% end %> 
+      </div>
+    </div>
+
+
+       <br />  
+
+
+
+ <div class="form-group">
+      <label for="chapter" class="col-lg-2 control-label"><h4>Chapter</h4></label>
+      <div class="col-lg-10">
+
+      <%= form_for(:chapter, :url => {:action => 'findchapter'}) do |f| %>
+
+        <%= f.collection_select(:chapter_number, Chapter.all, :id, :number_with_title, {:selected => @chapter_number.to_i}, {:class=>'form-control'}) %>
+<br />
+
+
+
+       <%= submit_tag("Download Chapter Report", :class => "btn btn-primary") %> 
+       <%= submit_tag("View Chapter Report",  :class => "btn btn-primary btn-med") %>
+
+       <br />  
+  <% end %> 
+      </div>
+    </div>
+
+
+       <br />  
+
+    <div class="form-group">
+      <label for="student" class="col-lg-2 control-label"><h4>Student</h4></label>
+      <div class="col-lg-10">
+<%= form_for(:student, :url => {:action => :findstudent}) do |f| %>
+<% if session[:type] == "instructor" %>
+
+<%= collection_select(:student_id, :id, Student.all.where(:instructor_id => session[:user_id], :active => true), :id, :student_id, {}, {:class=>'form-control'}) %>
+<%else%>
+
+<%= collection_select(:student_id, :id, Student.all, :id, :student_id, {}, {:class=>'form-control'}) %>
+<%end%>
+
+
+
+<div class="actions">
+<br />  
+        <%= submit_tag("Download Student Report", :class => "btn btn-success") %> 
+        <%= submit_tag("View Student Report", :class => "btn btn-success") %> 
+
+
+</div>
+
+      <% end %>
+
+
+      </div>
+    </div>
+
+  <label for="student" class="col-lg-2 control-label">
+<!-- <p> -->
+<h4>Full Report</h4>
+<%= link_to 'Download Full Report', report_masterreport_path(format: :csv), :class => "btn btn-info btn-med" %> <%= link_to("View Full Report", {:controller => :reports, :action => :masterscore}, :class => "btn btn-info btn-med") %>
+
+ </div>
+

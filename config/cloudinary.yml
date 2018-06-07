@@ -1,0 +1,19 @@
+---
+development:
+  cloud_name: snowy-scratch
+  api_key: '983372412741373'
+  api_secret: w12nj3U5cm1wGsLFve3oCsganHU
+  enhance_image_tag: true
+  static_image_support: false
+production:
+  cloud_name: snowy-scratch
+  api_key: '983372412741373'
+  api_secret: w12nj3U5cm1wGsLFve3oCsganHU
+  enhance_image_tag: true
+  static_image_support: true
+test:
+  cloud_name: snowy-scratch
+  api_key: '983372412741373'
+  api_secret: w12nj3U5cm1wGsLFve3oCsganHU
+  enhance_image_tag: true
+  static_image_support: false

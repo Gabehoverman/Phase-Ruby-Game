@@ -1,0 +1,14 @@
+<div id="new_student" class="container">
+
+		<h2>Add Student</h2>
+		<%= form_for(:student, :url => {:action => 'create'}) do |f| %>
+
+    	<%= render(:partial => "form", :locals => {:f => f}) %>
+
+    	<% end %>
+	</div>
+
+<div class="row">
+<%= link_to("<< Back to Student Management", {:action => 'studentmanagement'}, :class => 'back-link') %>
+</div>
+

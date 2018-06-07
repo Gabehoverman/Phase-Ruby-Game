@@ -1,0 +1,14 @@
+<h2>Editing
+<%= @instructor.username %></h2>
+
+
+		<%= form_for(:instructor, :url => {:action => :change, :id => @id, :method => :put}) do |f| %>
+
+    	<%= render(:partial => "form", :locals => {:f => f}) %>
+
+    	<% end %>
+<br/>
+<%= link_to("Change Password", {:controller => :instructors, :action => :changepassword, :id => @id}, :class => "btn btn-warning btn-xs") %>   
+<br/>
+<br/>
+<%= link_to("Back to Instructors", {:controller => :instructors, :action => :listinstructors}, :class => "btn btn-primary") %>   

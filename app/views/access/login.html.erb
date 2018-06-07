@@ -1,0 +1,35 @@
+<% @page_title = "Login" %>
+<!-- <div class="jumbotron">
+ -->
+<div id="wrapper">
+<div id="login" class="container">
+	<%= form_tag(:action => 'attempt_login') do %>
+	<div class="col-xs-4 col-xs-offset-4">
+	 <fieldset>
+		<form role="table">
+			<div class="form-group">
+				<%= label_tag(:username) %>
+				<%= text_field_tag(:username) %>
+			</div>
+			<div class="form-group">
+				<%= label_tag(:password) %>
+				<%= password_field_tag(:password) %>
+			</div>
+			<div class="text-center">
+				&nbsp; &nbsp;
+				<%= submit_tag("Log In", :class => "btn btn-success") %>
+			</div>
+		</form>
+		 </fieldset>
+		 </div>
+
+	</div>
+      </div>
+		<div class="col-xs-4 col-xs-offset-4">
+				 <br/>
+
+		 <%= link_to("Forgot Password?", {:controller => :password_resets, :action => :new}, :class => "btn btn-info btn-xs") %>
+		 <br/>
+		 	</div>
+	<% end %>
+<!-- </div> -->

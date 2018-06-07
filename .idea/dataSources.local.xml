@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="dataSourceStorageLocal">
+    <data-source name="Rails cs305-web-app: production" uuid="5c86ce26-1e1d-4801-8597-6ca3e1eae19a">
+      <database-info product="PostgreSQL" version="9.5.1" jdbc-version="4.0" driver-name="PostgreSQL Native Driver" driver-version="PostgreSQL 9.4 JDBC4 (build 1201)">
+        <identifier-quote-string>&quot;</identifier-quote-string>
+      </database-info>
+      <case-sensitivity plain-identifiers="lower" quoted-identifiers="exact" />
+      <user-name>gardener</user-name>
+      <introspection-schemas>gardener_production:</introspection-schemas>
+    </data-source>
+    <data-source name="Rails cs305-web-app: development" uuid="e6cb4427-31fd-4a82-91dc-1b29229cd6a6">
+      <database-info product="PostgreSQL" version="9.5.1" jdbc-version="4.0" driver-name="PostgreSQL Native Driver" driver-version="PostgreSQL 9.4 JDBC4 (build 1201)">
+        <identifier-quote-string>&quot;</identifier-quote-string>
+      </database-info>
+      <case-sensitivity plain-identifiers="lower" quoted-identifiers="exact" />
+      <user-name>postgres</user-name>
+      <introspection-schemas>gardener_development:pg_catalog,public</introspection-schemas>
+      <resolve-scope>gardener_development:public</resolve-scope>
+      <unqualified-resolve-schemas>gardener_development:public</unqualified-resolve-schemas>
+    </data-source>
+    <data-source name="Rails cs305-web-app: test" uuid="f7e2f79f-e832-4952-b7f1-463d273b3b77">
+      <database-info product="PostgreSQL" version="9.5.1" jdbc-version="4.0" driver-name="PostgreSQL Native Driver" driver-version="PostgreSQL 9.4 JDBC4 (build 1201)">
+        <identifier-quote-string>&quot;</identifier-quote-string>
+      </database-info>
+      <case-sensitivity plain-identifiers="lower" quoted-identifiers="exact" />
+      <introspection-schemas>gardener_test:</introspection-schemas>
+    </data-source>
+  </component>
+</project>

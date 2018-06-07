@@ -1,0 +1,83 @@
+<% @page_title = "List Instructors" %>
+<script type="text/javascript" src="jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="jquery.tablesorter.js"></script> 
+<script type="text/javascript">
+$(document).ready(function() 
+    { 
+         $("#myTable").tablesorter( {sortList: [[0,0], [1,0]]} );
+
+    } 
+); 
+</script>
+
+<div id="new_instructor" class="container">
+
+    <h2>Add Instructor</h2>
+    <%= form_for(:instructor, :url => {:action => 'create'}) do |f| %>
+
+      <%= render(:partial => "signup", :locals => {:f => f}) %>
+
+      <% end %>
+  </div>
+
+<br />
+
+
+<h2>View Instructors</h2>
+<table id="myTable" class="tablesorter">
+<div><%= pluralize(@instructors.size, 'instructor') %> found</div>
+  <thead>
+    <tr>
+      <th> ID </th>
+     <th> Username </th>
+      <th> Email Confirmed? </th>
+      <th> Reset Password </th>
+      <th> Edit Instructor </th>
+      <th> Deactivate/Activate </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+ <% @instructors.each do |instructor| %>
+   
+      <td><strong><%= instructor.id %></strong></td>
+      <td><strong><%= instructor.username %></strong></td>
+        
+ <td> <strong><%if instructor.email_confirmed == true %>
+        <p class="text-success"><%= 'Yes' %></p>
+         <% else %>
+         <p class="text-danger"><%= 'No' %></p>
+         <% end %></strong></td>
+
+
+      <td> 
+        <%= link_to("Reset", {:action => :instructors, :action => :reset , :id => instructor.id}, :class => "btn btn-warning btn-xs") %>
+</td>
+
+      <td> 
+        <%= link_to(" Edit", {:action => :instructors, :action => :edit, :id => instructor.id}, :class => "btn btn-primary btn-xs") %>
+</td>
+
+
+      <td> <%if instructor.active == true %>
+
+        <%= link_to("  Deactivate", {:action => 'inactivate', :id => instructor.id, :change_to => false}, :class => "btn btn-danger btn-xs",:title => instructor.updated_at.in_time_zone('Eastern Time (US & Canada)').strftime('%x'), :rel => 'tooltip') %>
+ <% else %>
+
+            <%= link_to(" Activate", {:action => 'inactivate', :id => instructor.id, :change_to => true}, :class => "btn btn-success btn-xs", :title => instructor.updated_at.in_time_zone('Eastern Time (US & Canada)').strftime('%x'), :rel => 'tooltip')%>
+
+<% end %></td>
+
+
+
+
+<!--       <td><%= instructor.updated_at.in_time_zone('Eastern Time (US & Canada)').strftime('%x') %></td>
+ -->    </tr>
+    <% end %>
+    </tr>
+  </tbody>
+</table>
+
+
+
+<%= link_to("<< Back to  Menu", {:controller => :menu, :action => :menu}, :class => "btn btn-primary") %>

@@ -1,0 +1,154 @@
+<% @page_title = "Chapter Information" %>
+<script type="text/javascript" src="jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="jquery.tablesorter.js"></script> 
+<script type="text/javascript">
+$(document).ready(function() 
+    { 
+         $("#myTable").tablesorter( {sortList: [[0,0], [1,0]]} );
+
+    } 
+); 
+</script>
+
+<script type='text/javascript'>
+  $('.toggle_info').click(function () {
+    $(this).closest('.photo').toggleClass('show_more_info');
+    return false;
+  });
+</script>
+
+
+
+<br />
+
+  <% thumbs_params = { :format => "jpg", :height => 20, :width => 20, :class => "thumbnail inline" } %>
+
+<h2>
+ <%= "Chapter " +@chapter.number_with_title %></h2>
+<table id="myTable" class="tablesorter">
+<div><%= pluralize(@questions.size, 'question') %> found</div>
+  <thead>
+    <tr>
+      <th> Question </th>
+     <th> Question Image </th>
+      <th> Answer </th>
+      <th> Answer Image </th>
+      <th> Number of Correct Responses </th>
+      <th> Number of Incorrect Responses</th>
+      <th> Percent </th>
+      <th> Active </th>
+
+
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+ <% @questions.each_with_index do |question,index| %>
+      <td><strong><%= question.question_desc %></strong></td>
+
+      <td>
+      <% photo = QuestionAsset.all.where(:question_id => question.id).where(:isanswer => false).first%>
+      <%if photo%>
+      <a href="<%= photo.image.url %>" target="_blank">
+        <%= image_tag(photo.image.thumbnail.url, :class => "thumbnail inline") %>
+      <%else%>
+        <%= "No image."%>
+       <%end%>
+      </td>
+
+      <td><strong><%= question.correct_answer %></strong></td>
+
+
+      <td>
+      <% photo = QuestionAsset.all.where(:question_id => question.id).where(:isanswer => true).first%>
+      <%if photo%>
+      <a href="<%= photo.image.url %>" target="_blank">
+        <%= image_tag(photo.image.thumbnail.url, :class => "thumbnail inline") %>
+      <%else%>
+        <%= "No image."%>
+       <%end%>
+      </td>
+
+
+
+
+
+
+      </td>
+
+
+
+
+      <td><strong><%= @corrects[index] %></strong></td>
+      <td><strong><%= @wrongs[index]%></strong></td>
+      <td><strong><%=  
+    total = @corrects[index]+@wrongs[index]
+      if(total != 0)
+        number_with_precision(@corrects[index].to_f/(@corrects[index]+@wrongs[index]).to_f * 100, :precision => 2) +" %"
+      else
+        "0.00 %"
+      end
+         %></strong></td>
+
+
+     <td> <%if question.active == true %>
+
+        <%= link_to("  Deactivate", {:action => 'inactivate', :chapter => question.chapter_id, :change_to => false, :question_id => question.id}, :class => "btn btn-danger btn-xs",:title => question.updated_at.in_time_zone('Eastern Time (US & Canada)').strftime('%x'), :rel => 'tooltip') %>
+ <% else %>
+
+            <%= link_to(" Activate", {:action => 'inactivate', :chapter => question.chapter_id, :change_to => true,  :question_id => question.id}, :class => "btn btn-success btn-xs", :title => question.updated_at.in_time_zone('Eastern Time (US & Canada)').strftime('%x'), :rel => 'tooltip')%>
+
+<% end %></td>
+
+
+
+  </tr>
+    <% end %>
+    </tr>
+  </tbody>
+</table>
+
+<!-- <div id="add_question" class="container">
+
+    <h2>Add Question</h2>
+    <%= form_for(:new_question, :url => {:action => :makequestion}) do |f| %>
+
+      <%= render(:partial => "add_question", :locals => {:f => f}) %>
+      <%= hidden_field_tag :direct, params[:direct] %>
+
+
+      <% end %>
+  </div>
+
+  <div id="add_answer" class="container">
+
+    <h2>Add Answer</h2>
+    <%= form_for(:question_asset, :url => {:controller => :question_asset, :action => :create}) do |f| %>
+
+      <%= render(:partial => "possible_answer", :locals => {:f => f}) %>
+    <%= hidden_field_tag :direct, params[:direct] %>
+
+      <% end %>
+  </div> -->
+
+    <div id="add_answer" class="container">
+
+    <h2>Add Question and Answer</h2>
+    <%= form_for(:new_question, :url => { :action => :makequestionandanswer}) do |f| %>
+
+      <%= render(:partial => "addquestionandanswer", :locals => {:f => f}) %>
+    <%= hidden_field_tag :direct, params[:direct] %>
+
+      <% end %>
+  </div>
+
+
+
+
+<p></p>
+
+
+
+
+
+<%= link_to("<< Back to  Menu", {:controller => :question_builder, :action => :index}, :class => "btn btn-primary") %>

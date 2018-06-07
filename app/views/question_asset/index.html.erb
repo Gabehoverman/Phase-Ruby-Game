@@ -1,0 +1,26 @@
+<h1>Your Photos</h1>
+
+
+<div class="photos">
+  <% if @photos.empty? %>
+    <p>No photos were added yet.</p>
+  <% end %>
+
+  <% thumbs_params = { :format => "jpg", :height => 150, :width => 150, :class => "thumbnail inline" } %>
+  <% @photos.each do |photo| %>
+    <div class="photo">
+      <h2><%= photo.title %></h2>
+      <a href="<%= photo.image.url %>" target="_blank">
+        <%= image_tag(photo.image.thumbnail.url, :class => "thumbnail inline") %>
+      </a>
+      
+
+  <% end %>
+</div>
+
+<script type='text/javascript'>
+  $('.toggle_info').click(function () {
+    $(this).closest('.photo').toggleClass('show_more_info');
+    return false;
+  });
+</script>

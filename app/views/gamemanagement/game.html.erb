@@ -1,0 +1,597 @@
+<html>
+<%if @chapter == "1" %>
+<head>
+    <meta charset="utf-8">
+    <script src="/game/javascript/boot.js.erb"></script>
+    <script src="/game/javascript/preloader.js.erb"></script>
+    <script src="/game/javascript/start_menu.js.erb"></script>
+    <script src="/game/javascript/chapter_select.js.erb"></script>
+    <script src="/game/javascript/chapter_1.js.erb"></script>
+    <script src="/game/javascript/results.js.erb"></script>
+    <script src='https://code.responsivevoice.org/responsivevoice.js'></script>
+    <title>Garden Adventure</title>
+</head>
+<body>
+	<%= content_tag "div", id: "questions", data: {questions: Question.where( :chapter_id => @chapter), student: @student} do %>
+	<% end %>
+	<div id="gameContainer"></div>
+	<script type="text/javascript">
+	responsiveVoice.setDefaultVoice( "US English Male" );
+	
+	window.onload = function() {
+		var game = new Phaser.Game( 1536, 2048, Phaser.AUTO, 'gameContainer');
+		game.state.add( 'boot', GardenAdventure.boot );
+		game.state.add( 'preloader', GardenAdventure.preloader );
+		game.state.add( 'start_menu', GardenAdventure.start_menu );
+		game.state.add( 'chapter_select', GardenAdventure.chapter_select );
+		game.state.add( 'chapter_1', GardenAdventure.chapter_1 );
+		game.state.add( 'results', GardenAdventure.results );
+		game.state.start( 'boot' );
+	}
+	</script>
+
+	<script type="text/javascript">
+		// var questions = ( $('#questions').data('questions') );
+		// var this_question = questions[0];
+		// alert( "Question ID: " + this_question.id + " :: Chapter: " + this_question.chapter_id + " :: Description: " + this_question.question_desc + " :: Answer: " + this_question.correct_answer );
+	</script>
+</body>
+<% elsif @chapter == "2" %>
+<body>
+    <%= content_tag "div", id: "questions", data: {questions: Question.where(:chapter_id => @chapter), student: @student} do %>
+    <% end %>
+</body>
+
+
+<div>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1,
+        maximum-scale=1, minimum-scale=1, user-scalable=no" />
+        <title></title>
+        <script src="<%= javascript_path "phaser.min.js" %>"></script>
+        <script src='https://code.responsivevoice.org/responsivevoice.js'></script>
+
+
+        <style>
+            body {
+                padding: 10px;
+                margin: 10px;
+                background: rgba(112, 113, 112, 0.89);
+            }
+        </style>
+    </head>
+</div>
+<div class = "main-container">
+<script type="text/javascript">
+    responsiveVoice.setDefaultVoice( "US English Male" );
+
+    var height = $(window).height();
+    var width = $(window).width();
+    var game = new Phaser.Game(800,600,Phaser.CANVAS, 'container ', { preload: preload, create: create, update: update},true);
+
+
+    function resizeGame() {
+        var height = $(window).height();
+        var width = $(window).width();
+
+        game.width = width;
+        game.height = height;
+        game.stage.bounds.width = width;
+        game.stage.bounds.height = height;
+
+        if (game.renderType === Phaser.WEBGL)
+        {
+            game.renderer.resize(width, height);
+        }
+    }
+
+
+    function preload() {
+
+        
+
+        game.load.image('background','<%= image_path "background.png"%>');
+        game.load.image('ground', '<%= image_path "platform.png"%>');
+        game.load.image('chest', '<%= image_path "chest.png"%>');
+        game.load.spritesheet('dude', '<%= image_path "download.png"%>',62.2222,61.33333);
+        game.load.image('beet', '<%= image_path "Beet.png"%>');
+        game.load.image('cilantro', '<%= image_path "Cilantro.png"%>');
+        game.load.image('collards', '<%= image_path "Collards.png"%>');
+        game.load.image('watermelon', '<%= image_path "watermelon.png"%>');
+        game.load.image('onion', '<%= image_path "Onion.png"%>');
+        game.load.image('pumpkin', '<%= image_path "WPumpkin.png"%>');
+        game.load.image('hoe2','<%= image_path "hoe.png"%>');
+        game.load.image('hoe1','<%= image_path "hoe.png"%>');
+        game.load.image('uparrow','<%= image_path "uparrow.png"%>');
+        game.load.image('leftarrow','<%= image_path "leftarrow.png"%>');
+        game.load.image('rightarrow','<%= image_path "rightarrow.png"%>');
+
+        this.game.scale.pageAlignHorizontally = true;
+        this.game.scale.pageAlignVertically = true;
+        this.game.scale.refresh();
+
+
+    }
+
+    questionList = questions;
+
+    var platforms = game.add.group();
+    var chest = game.add.group();
+    var seed = game.add.group();
+    var hoe1 = game.add.group();
+    var hoe2 = game.add.group();
+    var upArrow = game.add.group();
+    var leftArrow = game.add.group();
+    var rightArrow = game.add.group();
+
+    var onion = '<%= image_path "onion.png" %>';
+    var beet = '<%= image_path "Beet.png" %>';
+    var cilantro = '<%= image_path "Cilantro.png" %>';
+    var collards = '<%= image_path "Collards.png" %>';
+    var watermelon = '<%= image_path "watermelon.png" %>';
+    var pumpkin = '<%= image_path "WPumpkin.png" %>';
+    var currentSeed;
+    var hot = ["cilantro", "collards", "watermelon"];
+    var cold = ["pumpkin", "onion", "beet"];
+
+    //var seeds = new Array("Onion.png", "Beet.png", "Cilantro.png", "Collards.png", "watermelon.png", "WPumpkin.png");
+
+    var score = 0;
+    var scoreText;
+    var cilBoo;
+    var beeBoo;
+    var colBoo;
+    var watBoo;
+    var oniBoo;
+    var pumBoo;
+    var jump = false;
+    var left = false;
+    var right = false;
+
+
+    function create() {
+
+        $(window).resize(function() { window.resizeGame(); } );
+        game.physics.startSystem(Phaser.Physics.ARCADE);
+        game.add.image(0, 0, 'background');
+
+
+        hoe1 = game.add.group();
+        hoe2 = game.add.group();
+        hoe1.enableBody = true;
+        hoe2.enableBody = true;
+        var hotHoe = hoe1.create(75,200,'hoe1');
+        var coldHoe = hoe2.create(575,200,'hoe2');
+
+        hotHoe.scale.setTo(0.25,0.25);
+        coldHoe.scale.setTo(0.25,0.25);
+
+        hotHoe.body.immovable = true;
+        coldHoe.body.immovable = true;
+
+
+        platforms = game.add.group();
+        chest = game.add.group();
+        seed = game.add.group();
+        chest.enableBody = true;
+        var seedChest = chest.create(600,485, 'chest'); //dont change these numbers
+        seedChest.scale.setTo(.5,.5);
+        seedChest.body.immovable = true;
+        seedChest.exists=true;
+
+
+        platforms.enableBody = true;
+
+        var ground = platforms.create(0, game.world.height - 64, 'ground');
+        ground.scale.setTo(2, 2);
+        ground.body.immovable = true;
+        var ledge = platforms.create(-100, 400, 'ground');
+        ledge.body.immovable = true;
+        ledge = platforms.create(450, 400, 'ground');
+        ledge.body.immovable = true;
+        player = game.add.sprite(32, game.world.height - 150, 'dude');
+
+
+        upArrow = game.add.button(700,450,'uparrow',null,this);
+        upArrow.events.onInputDown.add(function(){jump = true;});
+        upArrow.events.onInputUp.add(function(){jump = false;});
+        upArrow.alpha = .5;
+
+        leftArrow = game.add.button(50,450,'leftarrow',null,this);
+        leftArrow.events.onInputDown.add(function(){left = true;});
+        leftArrow.events.onInputUp.add(function(){left = false;});
+        leftArrow.alpha = .5;
+
+        rightArrow = game.add.button(115,450,'rightarrow',null,this);
+        rightArrow.events.onInputDown.add(function(){right = true;});
+        rightArrow.events.onInputUp.add(function(){right = false;});
+        rightArrow.alpha = .5;
+
+
+
+
+        game.physics.arcade.enable(player);
+        player.body.bounce.y = .2;
+        player.body.gravity.y = 375;
+        player.body.collideWorldBounds = true;
+        player.animations.add('left',[0,1,2,3,4,5,6,7,8],10,true);
+        player.animations.add('right',[18,19,20,21,22,23,24,25],10,true);
+        //player.animations.add('right',[23],10,true);
+
+        score = 0;
+        gameCount = 0;
+        scoreText = game.add.text(325,16,'Score: 0',{fontSize: '32px',fill: '#ffffff'});
+        cilBoo = false;
+        beeBoo = false;
+        colBoo = false;
+        watBoo = false;
+        oniBoo = false;
+        pumBoo = false;
+
+    }
+
+        var gameCount = 0;
+    var finalScore;
+
+    var sayOnce = true;
+    function update() {
+
+        game.physics.arcade.collide(player, platforms);
+        game.physics.arcade.overlap(player, chest, collectSeeds, null, this);
+        game.physics.arcade.overlap(player, hoe1, hotWeather , null, this);
+        game.physics.arcade.overlap(player, hoe2, coldWeather , null, this);
+        cursors = game.input.keyboard.createCursorKeys();
+
+
+
+        player.body.velocity.x = 0;
+
+//left movement
+        if (left) {
+            player.body.velocity.x = -150;
+            player.animations.play('left');
+
+        }
+//right movement
+        else if (right) {
+            player.body.velocity.x = 150;
+            player.animations.play('right');
+        }
+//standing still
+        else {
+            player.animations.stop();
+            player.frame = 9;
+        }
+//jumping
+        if (jump && player.body.touching.down)  {
+            player.body.velocity.y = -350;
+
+        }
+
+        if (gameCount == 6) {
+            finalScore = (score / 60.0) * 100;
+            alert("Completed! Score: " + finalScore + "%");
+
+            $.post( '/gamemanagement/save_score', '' );
+            // window.location = '/gamemanagement/done'
+                game.destroy();
+            //save(); //wont reach function
+
+        }
+
+
+    }
+
+
+
+
+    function collectSeeds() {
+
+  
+
+    //seed.create(400,300,seeds[0]);
+        var ranIn = Math.random();
+        var unusedFound = false;
+        while(unusedFound != true) {
+
+
+            if (ranIn <= .17 ) {
+                if(beeBoo == false) {
+                    seed.create(325, 100, 'beet');
+                    chest.exists = false;
+                    currentSeed = 'beet';
+                    responsiveVoice.speak("Is a beet a winter plant or a summer plant? ", "US English Male")
+                    beeBoo = true;
+                    unusedFound = true;
+                }
+                else
+                ranIn = .19;
+
+            }
+            else if (ranIn > .18 && ranIn < .33) {
+                if(cilBoo ==false) {
+                    seed.create(325, 100, 'cilantro');
+                    chest.exists = false;
+                    currentSeed = 'cilantro';
+                    responsiveVoice.speak("Is cilantro a winter plant or a summer plant? ", "US English Male")
+                    cilBoo = true;
+                    unusedFound = true;
+                }
+                else
+                ranIn = .34;
+
+            }
+            else if (ranIn > .33 && ranIn < .49) {
+                if(colBoo == false) {
+                    seed.create(325, 100, 'collards');
+                    chest.exists = false;
+                    currentSeed = 'collards';
+                    responsiveVoice.speak("Are collard greens a winter plant or a summer plant? ", "US English Male")
+
+                    colBoo = true;
+                    unusedFound = true;
+
+                }
+                else
+                ranIn = .50
+
+            }
+            else if (ranIn > .49 && ranIn < .65) {
+                if(watBoo== false) {
+                    seed.create(325, 100, 'watermelon');
+                    chest.exists = false;
+                    currentSeed = 'watermelon';
+                    responsiveVoice.speak("Is a watermelon a winter plant or a summer plant? ", "US English Male")
+
+                    watBoo = true;
+                    unusedFound = true;
+                }
+                else
+                ranIn = .66;
+
+            }
+            else if (ranIn > .65 && ranIn < .81) {
+                if(oniBoo == false) {
+                    seed.create(325, 100, 'onion');
+                    chest.exists = false;
+                    currentSeed = 'onion';
+                    responsiveVoice.speak("Is an onion a winter plant or a summer plant? ", "US English Male")
+
+                    oniBoo = true;
+                    unusedFound = true;
+                }
+                else
+                ranIn = .82;
+
+            }
+            else if( ranIn > .81) {
+
+                if (pumBoo == false) {
+
+                    seed.create(325, 100, 'pumpkin');
+                    chest.exists = false;
+                    currentSeed = 'pumpkin';
+                     responsiveVoice.speak("Is a pumpkin a winter plant or a summer plant? ", "US English Male")
+
+
+                    pumBoo = true;
+                    unusedFound = true;
+                }
+
+                else
+                    ranIn = .1;
+            }
+            else{
+                if(pumBoo == true && oniBoo == true && watBoo == true && colBoo == true && cilBoo && beeBoo == true){
+                    unusedFound = true;
+                }
+                else
+                ranIn = .1;
+
+            }
+        }
+    }
+        function coldWeather(){
+            if(currentSeed != null) {
+                var placedSeed = currentSeed;
+
+                if(placedSeed == "beet"){
+
+
+                    score += 10;
+                    scoreText.text = 'Score: ' + score;
+                    gameCount +=1;
+                    chest.exists = true;
+                    currentSeed = null;
+
+                    student_id: $('#questions').data('student').id;
+                    /*
+                    chapter_id: questionList[0].chapter_id;
+                    ongoing: true;
+                    question_id: questionList[0].id;
+                    student_answer: coldWeather;
+                    */
+
+                     responsiveVoice.speak("That's right! Beets are a winter plant.", "US English Male")
+
+                    $.post( '/gamemanagement/save_result', { student_id: $('#questions').data('student').id, chapter_id: 2, ongoing: true, question_id: 4, student_answer: 'coldWeather', isanswercorrect: true } );
+                }
+                else if(placedSeed == "pumpkin"){
+
+                    score += 10;
+                    gameCount +=1;
+                    scoreText.text = 'Score: ' + score;
+                    chest.exists = true;
+                    currentSeed = null;
+
+                    student_id: $('#questions').data('student').id;
+                    /*
+                    chapter_id: questionList[2].chapter_id;
+                    ongoing: true;
+                    question_id: questionList[2].id;
+                    student_answer: coldWeather;
+                    */
+                     responsiveVoice.speak("That's right! Pumpkins are a winter plant!", "US English Male")
+
+                    $.post( '/gamemanagement/save_result', { student_id: $('#questions').data('student').id, chapter_id: 2, ongoing: true, question_id: 6, student_answer: 'coldWeather' } );
+                }
+                else if(placedSeed=="onion"){
+
+                    score += 10;
+                    gameCount +=1;
+                    scoreText.text = 'Score: ' + score;
+                    chest.exists = true;
+                    currentSeed = null;
+
+                    student_id: $('#questions').data('student').id;
+                    /*
+                    chapter_id: questionList[1].chapter_id;
+                    ongoing: true;
+                    question_id: questionList[1].id;
+                    student_answer: coldWeather;
+                    */
+                     responsiveVoice.speak("That's right! Onions are a winter plant!", "US English Male")
+
+                    $.post( '/gamemanagement/save_result', { student_id: $('#questions').data('student').id, chapter_id: 2, ongoing: true, question_id: 5, student_answer: 'coldWeather' } );
+                }
+                else{
+                    gameCount +=1;
+                    scoreText.text = 'Score: ' + score;
+                    chest.exists = true;
+
+
+                    if(currentSeed == "cilantro"){
+                         responsiveVoice.speak("Cilantro is a summer plant", "US English Male")
+
+                        $.post( '/gamemanagement/save_result', { student_id: $('#questions').data('student').id, chapter_id: 2, ongoing: true, question_id: 7, student_answer: 'coldWeather' } );
+                    }
+                    else if(currentSeed == "watermelon"){
+                         responsiveVoice.speak("Watermelon is a summer plant", "US English Male")
+
+                        $.post( '/gamemanagement/save_result', { student_id: $('#questions').data('student').id, chapter_id: 2, ongoing: true, question_id: 8, student_answer: 'coldWeather' } );
+                    }
+                    else if(currentSeed == "collards"){
+                        responsiveVoice.speak("Collard greens are a summer plant", "US English Male")
+
+                        $.post( '/gamemanagement/save_result', { student_id: $('#questions').data('student').id, chapter_id: 2, ongoing: true, question_id: 9, student_answer: 'coldWeather' } );
+                    }
+
+
+                    currentSeed = null;
+
+
+                }
+
+            }
+        }
+    function hotWeather(){
+        if(currentSeed != null) {
+            var placedSeed = currentSeed;
+
+            if(placedSeed=="cilantro"){
+
+                score += 10;
+                gameCount +=1;
+                scoreText.text = 'Score: ' + score;
+                chest.exists = true;
+                currentSeed = null;
+
+                student_id: $('#questions').data('student').id;
+                /*
+                chapter_id: questionList[3].chapter_id;
+                ongoing: true;
+                question_id: questionList[3].id;
+                student_answer: hotWeather;
+                */
+
+            responsiveVoice.speak("That's right! Cilantro is a summer plant!", "US English Male")
+                $.post( '/gamemanagement/save_result', { student_id: $('#questions').data('student').id, chapter_id: 2, ongoing: true, question_id: 7, student_answer: 'hotWeather' } );
+            }
+            else if(placedSeed=="collards"){
+
+                score += 10;
+                gameCount +=1;
+                scoreText.text = 'Score: ' + score;
+                chest.exists = true;
+                currentSeed = null;
+
+                student_id: $('#questions').data('student').id;
+                /*
+                chapter_id: questionList[5].chapter_id;
+                ongoing: true;
+                question_id: questionList[5].id;
+                student_answer: hotWeather;
+                */
+
+            responsiveVoice.speak("That's right! Collard greens are summer plants!", "US English Male")
+                $.post( '/gamemanagement/save_result', { student_id: $('#questions').data('student').id, chapter_id: 2, ongoing: true, question_id: 9, student_answer: 'hotWeather' } );
+            }
+            else if(placedSeed=="watermelon"){
+
+                score += 10;
+                gameCount +=1;
+                scoreText.text = 'Score: ' + score;
+                chest.exists = true;
+                currentSeed = null;
+
+                student_id: $('#questions').data('student').id;
+                /*
+                chapter_id: questionList[4].chapter_id;
+                ongoing: true;
+                question_id: questionList[4].id;
+                student_answer: hotWeather;
+                */
+            responsiveVoice.speak("That's right! Watermelon is a summer plant!", "US English Male")
+                $.post( '/gamemanagement/save_result', { student_id: $('#questions').data('student').id, chapter_id: 2, ongoing: true, question_id: 8, student_answer: 'hotWeather' } );
+            }
+            else{
+                gameCount +=1;
+                scoreText.text = 'Score: ' + score;
+                chest.exists = true;
+
+                if(currentSeed == "beet"){
+                    responsiveVoice.speak("Beets are a winter plant", "US English Male")
+                    $.post( '/gamemanagement/save_result', { student_id: $('#questions').data('student').id, chapter_id: 2, ongoing: true, question_id: 4, student_answer: 'hotWeather' } );
+                }
+                else if(currentSeed == "onion"){
+                    responsiveVoice.speak("Onions are a winter plant", "US English Male")
+
+                    $.post( '/gamemanagement/save_result', { student_id: $('#questions').data('student').id, chapter_id: 2, ongoing: true, question_id: 5, student_answer: 'hotWeather' } );
+                }
+                else if(currentSeed == "pumpkin"){
+                   responsiveVoice.speak("Pumpkins are a winter plant", "US English Male")
+
+                    $.post( '/gamemanagement/save_result', { student_id: $('#questions').data('student').id, chapter_id: 2, ongoing: true, question_id: 6, student_answer: 'hotWeather' } );
+                }
+                currentSeed = null;
+
+
+            }
+        }
+    }
+/*
+    function save(){
+        $.ajax({
+            type: "POST",
+            url: "/gamemanagement/save_result",
+            dataType: "json",
+            data: {student_id: 'seed1234', chapter_id: 2, ongoing: true, question_id: 5, student_answer: hotWeather},
+        })
+    }
+    */
+    </script>
+
+
+</div>
+
+
+
+
+
+<%else%>
+OPPS
+<% end %>
+
+
+</html>

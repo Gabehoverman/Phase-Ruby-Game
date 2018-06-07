@@ -1,0 +1,6 @@
+
+<%- headers = ['Name'] -%>
+<%= CSV.generate_line headers %>
+<%- @students.each do |student| -%>
+<%= CSV.generate_line([student.student_id]) -%>
+<%- end -%>

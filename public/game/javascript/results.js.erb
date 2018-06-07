@@ -1,0 +1,83 @@
+GardenAdventure.results = function( game ) {
+	this.resultBG;
+	this.playerAnswers;
+	this.questionList;
+	this.numOfCorrectAnswers;
+	this.finishedProcessingResults;
+	this.yesToRetake;
+	this.noToRetake;
+	this.yourScore;
+	this.finalScore;
+};
+
+	var finalScore;
+	var score;
+
+GardenAdventure.results.prototype = {
+
+	init: function ( answers, questions ) {
+		playerAnswers = answers;
+		questionList = questions;
+	},
+
+	replayGame: function ( button, pointer, isOver) {
+		if (isOver) {
+			this.state.start( 'chapter_1', true, false, $('#questions').data('questions') );
+		}
+	},
+
+	create: function () {
+		finishedProcessingResults = false;
+		numOfCorrectAnswers = 0;
+
+
+		resultBG = this.add.image( 0, 0, 'titleBG' );
+		circle = this.add.image(this.world.centerX -550, this.world.centerY - 600,'circle');
+		circle.scale.setTo(0.6,0.6);
+		scoreMascot = this.add.image(this.world.centerX , this.world.centerY -400, 'mascot');
+		scoreMascot.scale.setTo(.3,.3);
+		chapter1ReplayButton = this.add.button( this.world.centerX - 300, this.world.centerY + 125, 'chapter1Button', this.replayGame, this, 2, 1, 0 );
+		finalScore = this.add.text(100, 100, 'Score:', {fontSize: '56px', fill: '#000'});
+		score = this.add.text(16,16,'Score: 0 ',{fontSize: '56px', fill: '#000'});
+
+		for( i = 0; i < playerAnswers.length; i++ ) {
+			var newResult = {
+				"student_id": $('#questions').data('student').id,
+				"chapter_id": questionList[i].chapter_id,
+				"ongoing": true,
+				"question_id": questionList[i].id,
+				"student_answer": playerAnswers[i]
+			};
+
+			if( playerAnswers[i] == questionList[i] )
+				numOfCorrectAnswers++;
+
+			if( i == playerAnswers.length - 1 )
+				finishedProcessingResults = true;
+
+			console.log( newResult );
+
+			$.post( '/gamemanagement/save_result', {
+				student_id: $('#questions').data('student').id,
+				chapter_id: questionList[i].chapter_id,
+				ongong: true,
+				question_id: questionList[i].id,
+				student_answer: playerAnswers[i] } );
+		};
+
+		$.post( '/gamemanagement/save_score', '' );
+
+		yourScore = this.add.text( this.world.centerX - 350, this.world.centerY - 200, "Score: " + playerScore + " / " + questionList.length + " correct!" );
+
+
+	},
+
+	takeAnotherTest: function () {
+		this.state.start( 'chapter_select' );
+	},
+
+	noMoreTests: function () {
+		this.state.start( 'start_menu' );
+	}
+
+};

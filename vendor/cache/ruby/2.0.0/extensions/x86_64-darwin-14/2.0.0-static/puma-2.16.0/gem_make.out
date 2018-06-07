@@ -1,0 +1,31 @@
+/Users/GabeHoverman/.rvm/rubies/ruby-2.0.0-p643/bin/ruby -r ./siteconf20160224-39611-16gmugy.rb extconf.rb
+checking for BIO_read() in -lcrypto... yes
+checking for SSL_CTX_new() in -lssl... yes
+checking for openssl/bio.h... no
+creating Makefile
+
+make "DESTDIR=" clean
+
+make "DESTDIR="
+compiling http11_parser.c
+compiling io_buffer.c
+io_buffer.c:119:21: warning: passing 'uint8_t *' (aka 'unsigned char *') to parameter of type 'const char *' converts between pointers to integer types with different sign [-Wpointer-sign]
+  return rb_str_new(b->top, b->cur - b->top);
+                    ^~~~~~
+/Users/GabeHoverman/.rvm/rubies/ruby-2.0.0-p643/include/ruby-2.0.0/ruby/intern.h:674:29: note: passing argument to parameter here
+VALUE rb_str_new(const char*, long);
+                            ^
+1 warning generated.
+compiling mini_ssl.c
+In file included from mini_ssl.c:4:
+/Users/GabeHoverman/.rvm/rubies/ruby-2.0.0-p643/include/ruby-2.0.0/ruby/backward/rubyio.h:2:2: warning: use "ruby/io.h" instead of "rubyio.h" [-W#warnings]
+#warning use "ruby/io.h" instead of "rubyio.h"
+ ^
+1 warning generated.
+compiling puma_http11.c
+linking shared-object puma/puma_http11.bundle
+ld: warning: directory not found for option '-L/Users/haven/.sm/pkg/active/lib'
+
+make "DESTDIR=" install
+/usr/bin/install -m 0755 puma_http11.bundle ./.gem.20160224-39611-13au9g2/puma
+installing default puma_http11 libraries

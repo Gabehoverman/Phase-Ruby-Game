@@ -1,0 +1,78 @@
+  <form role="form" summary="Add possile answer fields">
+
+  
+  <div class="form-group">
+    <%= f.label(:title, "Question Text: ") %>
+     <%= f.text_field(:title) %>
+  </div>
+
+      <div class="form_line">
+      <%= f.label :image, "Question Image: " %>
+
+      <div class="form_controls">
+        <%= f.file_field :image %>
+        <%= f.hidden_field(:image_cache) %>
+        <%= f.hidden_field(:chapter, :value => params[:chapter_number]) %>
+
+
+
+      </div>
+
+    </div>
+
+
+
+
+
+
+
+
+      <%= f.label :correct_answer, "Answer: " %>
+
+        <%= f.collection_select(:correct_answer, QuestionAsset.all.where(:chapter_id =>params[:chapter_number]), :id, :title) %>
+
+
+<p></p>
+    <p> <h4><strong>What answers look like: </strong> </h4></p>
+  <div class="answer possibilities">
+  <% if @photos.empty? %>
+    <p>No photos were added yet.</p>
+  <% end %>
+
+  <% thumbs_params = { :format => "jpg", :height => 20, :width => 20, :class => "thumbnail inline" } %>
+  <table id="myTable" class="tablesorter">
+    <tr>
+  <% @photos.each do |photo| %>
+    <div class="photo">
+    <td>
+
+      <h4><%= photo.title %></h4>
+      <a href="<%= photo.image.url %>" target="_blank">
+        <%= image_tag(photo.image.thumbnail.url, :class => "thumbnail inline") %>
+      </a>
+      
+    </td>
+
+  <% end %>
+
+    </tr>
+  </table>
+
+</div>
+
+<script type='text/javascript'>
+  $('.toggle_info').click(function () {
+    $(this).closest('.photo').toggleClass('show_more_info');
+    return false;
+  });
+</script>
+
+
+
+
+  <div class="form-buttons">
+        <%= submit_tag("Save Question", :class => "btn btn-success") %>
+  </div>
+
+
+</form>

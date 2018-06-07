@@ -1,0 +1,28 @@
+<% @page_title = "Login" %>
+
+<div id="login" class="container">
+	<%= form_tag(:controller=>:access,:action => 'attempt_profile') do %>
+	<div class="col-xs-4 col-xs-offset-4">
+	 <fieldset>
+		<form role="table">
+			<div class="form-group">
+				<%= label_tag(:username) %>
+				<%= text_field_tag(:username) %>
+			</div>
+			<div class="form-group">
+				<%= label_tag(:password) %>
+				<%= password_field_tag(:password) %>
+			</div>
+			<div class="text-center">
+				&nbsp;
+				<%= submit_tag("Log In", :class => "btn btn-primary") %>
+			</div>
+		</form>
+		 </fieldset>
+
+		 <%= link_to("Back to Profile", :controller => :profile, :action => :profile) %>
+
+	</div>
+
+	<% end %>
+</div>

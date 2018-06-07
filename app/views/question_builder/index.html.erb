@@ -1,0 +1,17 @@
+
+ <div class="form-group">
+    <label for="chapter" class="col-lg-2 control-label"><h4>Chapter</h4></label>
+      <div class="col-lg-10">
+
+      <%= form_for(:chapter, :url => {:action => 'findchapter'}) do |f| %>
+
+        <%= f.collection_select(:chapter_number, Chapter.all, :id, :number_with_title, {:selected => @chapter_number.to_i}, { :onchange => "this.form.submit()", :class=>'form-control'}) %>
+      <br />
+    	  <div class="form-buttons">
+        <%= submit_tag("Get Chapter Details", :class => "btn btn-success") %>
+  		</div>
+
+    	<% end %>
+
+      </div>
+    </div>

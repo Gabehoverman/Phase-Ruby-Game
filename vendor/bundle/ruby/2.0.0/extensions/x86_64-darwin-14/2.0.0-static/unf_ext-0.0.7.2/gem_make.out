@@ -1,0 +1,14 @@
+/Users/GabeHoverman/.rvm/rubies/ruby-2.0.0-p643/bin/ruby -r ./siteconf20160224-44234-1vtn21j.rb extconf.rb
+checking for main() in -lstdc++... yes
+creating Makefile
+
+make "DESTDIR=" clean
+
+make "DESTDIR="
+compiling unf.cc
+linking shared-object unf_ext.bundle
+ld: warning: directory not found for option '-L/Users/haven/.sm/pkg/active/lib'
+
+make "DESTDIR=" install
+/usr/bin/install -m 0755 unf_ext.bundle ./.gem.20160224-44234-fm892j
+installing default unf_ext libraries

@@ -1,0 +1,77 @@
+<% @page_title = "List Students" %>
+<script type="text/javascript" src="jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="jquery.tablesorter.js"></script> 
+<script type="text/javascript">
+$(document).ready(function() 
+    { 
+         $("#myTable").tablesorter( {sortList: [[0,0], [1,0]]} );
+
+    } 
+); 
+</script>
+
+<div id="new_student" class="container">
+
+    <h2>Add Student</h2>
+    <%= form_for(:student, :url => {:action => 'create'}) do |f| %>
+
+      <%= render(:partial => "form", :locals => {:f => f}) %>
+
+      <% end %>
+  </div>
+
+<br />
+
+
+<h2>View Students</h2>
+<table id="myTable" class="tablesorter">
+<div><%= pluralize(@students.size, 'student') %> found</div>
+  <thead>
+    <tr>
+<!--       <th> ID </th>
+ -->     <th> Student ID </th>
+<%if session[:type] == 'admin' %>
+      <th> Instructor Username </th>
+<%end%>
+
+      <th> Active Student? </th>
+      <th> Change Enrollment </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+ <% @students.each do |student| %>
+   
+<!--       <td><%= student.id %></td>
+ -->      <td><strong><%= student.student_id %></strong></td>
+        
+
+  <%if session[:type] == 'admin' %>
+<td><strong><%= Instructor.find(student.instructor_id).username %></strong></td>
+<%end%>
+
+
+
+ <td> <strong><%if student.active == true %>
+        <p class="text-success"><%= 'Yes' %></p>
+         <% else %>
+         <p class="text-danger"><%= 'No' %></p>
+         <% end %></strong></td>
+
+      <td> <%if student.active == true %>
+        <%= link_to("  Unenroll", {:action => 'inactivate', :id => student.id, :change_to => false}, :class => "btn btn-danger btn-xs", :title => student.updated_at.in_time_zone('Eastern Time (US & Canada)').strftime('%x'), :rel => 'tooltip') %>
+ <% else %>
+            <%= link_to(" Enroll", {:action => 'inactivate', :id => student.id, :change_to => true},:class => "btn btn-success btn-xs", :title => student.updated_at.in_time_zone('Eastern Time (US & Canada)').strftime('%x'), :rel => 'tooltip')%>
+
+<% end %></td>
+
+<!--       <td><%= student.updated_at.in_time_zone('Eastern Time (US & Canada)').strftime('%x') %></td>
+ -->    </tr>
+    <% end %>
+    </tr>
+  </tbody>
+</table>
+
+
+
+<%= link_to("<< Back to  Menu", {:controller => :menu, :action => :menu}, :class => "btn btn-primary") %>

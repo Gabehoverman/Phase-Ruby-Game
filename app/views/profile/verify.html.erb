@@ -1,0 +1,35 @@
+<% @page_title = "Relogin" %>
+			<% if session[:type]=="instructor" %>
+          <% @instructor = Instructor.find(session[:user_id])%>
+          <%else%>
+          <% @instructor = Admin.find(session[:user_id])%>
+          <%end%>
+
+
+<h2>Verify Credentials</h2>
+<div id="login" class="container">
+	<%= form_tag(:controller=>:access,:action => 'attempt_profile', :cpw => params[:cpw]) do %>
+	 <fieldset>
+		<form role="table">
+			<div class="form-group">
+				<%= label_tag(:username) %>
+
+				<%= text_field_tag(:username, @instructor.username ) %>
+			</div>
+			<div class="form-group">
+				<%= label_tag(:password) %>
+				<%= password_field_tag(:password) %>
+			</div>
+				&nbsp;
+				<%= submit_tag("Log In", :class => "btn btn-success") %>
+		</form>
+		 </fieldset>
+	</div>
+	<br />
+
+<%= link_to("<< Back to  Profile", {:controller => :profile, :action => :profile}, :class => "btn btn-primary") %>
+
+	</div>
+
+	<% end %>
+</div>

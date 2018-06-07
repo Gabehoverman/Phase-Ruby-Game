@@ -1,0 +1,33 @@
+<% @page_title = "Inactivate" %>
+<h2>Change Student Activation </h2> 
+<div class="inactivate students">
+
+<table summary="Student detail view">
+     <th>&nbsp;</th>
+      <th>ID: </th>
+      <td><%= @student.id%></td>
+  
+    
+      <th>Student ID: </th>
+      <td><%= @student.student_id%></td>
+
+      <th>Is Currently Active: </th>
+      <td><% if @student.active == true %>
+        <%= 'Yes' %>
+      <td><%else %>
+         <%= 'No' %>
+         <% end %>
+      </td>
+   
+  </table>
+ <br />
+ <%= 'Change status to: '  + @change_to +'?'%>
+ <br />
+  <br />
+    <div class="form-buttons">
+      <%= submit_tag("Change") %>
+      <%= submit_tag("Cancel") %>
+    </div>
+  <br />
+
+<%= link_to("<< Back to Student Management", {:action => 'studentmanagement'}, :class => 'back-link') %>

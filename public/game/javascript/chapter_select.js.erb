@@ -1,0 +1,33 @@
+GardenAdventure.chapter_select = function ( game ) {
+	this.menuBG;
+	this.selectPrompt;
+	this.chapter1Button;
+	this.buttonDing;
+};
+
+GardenAdventure.chapter_select.prototype = {
+
+	create: function () {
+		buttonDing = this.add.audio( 'start_ding' );
+
+		menuBG = this.add.image( 0, 0, 'titleBG' );
+		selectPrompt = this.add.text( this.world.centerX - 90, this.world.centerY + 100, "Select a chapter!", this.textStyle );
+		startPrompt.setShadow( 3, 3, 'rgba( 0, 0, 0, 0.5 )', 2 );
+		startPrompt.setTextBounds( 0, 100, 800, 100 );
+		chapter1Button = this.add.button( this.world.centerX - 200, this.world.centerY + 200, 'chapter1Button', this.onSelectChapter1, this, 2, 1, 0 );
+
+	},
+
+	update: function () {
+
+	},
+
+	onSelectChapter1: function ( button, pointer, isOver ) {
+		if ( isOver )
+		{
+			buttonDing.play();
+			this.state.start( 'chapter_1', true, false, $('#questions').data('questions') );
+		}
+	}
+};
+

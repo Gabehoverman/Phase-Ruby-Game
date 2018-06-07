@@ -1,0 +1,30 @@
+GardenAdventure.start_menu = function ( game ) {
+	this.startBG;
+	this.startPrompt;
+	this.buttonDing;
+	this.mascot;
+};
+
+GardenAdventure.start_menu.prototype = {
+
+	create: function () {
+		buttonDing = this.add.audio( 'start_ding' );
+		startBG = this.add.image( 0, 0, 'titleBG' );
+		startBG.inputEnabled = true;
+		startBG.events.onInputDown.addOnce( this.selectChapter, this );
+
+		mascot = this.add.image( 200, this.world.centerY - 500, 'mascot' );
+		mascot.scale.setTo( 0.5, 0.5 );
+
+		startPrompt = this.add.text( this.world.centerX - 90, this.world.centerY + 100, "Touch to Start!", this.textStyle );
+		startPrompt.setShadow( 3, 3, 'rgba( 0, 0, 0, 0.5 )', 2 );
+
+		startPrompt.setTextBounds( 0, 100, 800, 100 );
+	},
+
+	selectChapter: function ( pointer ) {
+		buttonDing.play();
+		this.state.start( 'chapter_select' );
+	}
+
+};

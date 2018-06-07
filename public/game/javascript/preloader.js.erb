@@ -1,0 +1,62 @@
+GardenAdventure.preloader = function( game ) {
+	this.preloadBar = null;
+	this.titleText = null;
+	this.textStyle = null;
+	this.ready = false;
+};
+
+GardenAdventure.preloader.prototype = {
+
+	preload: function () {
+		//Loading Fonts and Preloader Assets
+		this.preloadBar = this.add.sprite( this.world.centerX, this.world.centerY, 'preloaderBar' );
+		this.preloadBar.anchor.setTo( 0.5, 0.5 );
+		this.load.setPreloadSprite( this.preloadBar );
+		this.load.bitmapFont( 'eightbitwonder', '/game/fonts/eightbitwonder.png', '/game/fonts/eightbitwonder.fnt' );
+		this.textStyle = { font: "bold 50px CF Plants and Flowers", fill: "#fff", boundsAlignH: "center", boundsAlignV: "middle" };
+		this.load.image( 'mascot', '/game/images/mascot.png' );
+
+		//Loading Chapter 1 Image Assets
+		this.load.image( 'titleBG', '/game/images/new_Background.png' );
+		this.load.image( 'broccoli', '/game/images/flowers/broc.png' );
+		this.load.image( 'cali', '/game/images/flowers/cali.png' );
+		this.load.image( 'peppers', '/game/images/fruit/peppers.png' );
+		this.load.image( 'tomato', '/game/images/fruit/tomato.png' );
+		this.load.image( 'watermelon', '/game/images/fruit/watermelon.png' );
+		this.load.image( 'melonSlice', '/game/images/fruit/watermelon_slices.png' );
+		this.load.image( 'romaine', '/game/images/leaves/Romaine.png' );
+		this.load.image( 'spinach', '/game/images/leaves/Spinach.png' );
+		this.load.image( 'iceburg', '/game/images/leaves/iceburg.png' );
+		this.load.image( 'spinachLeaves', '/game/images/leaves/spinachleaves.png' );
+		this.load.image( 'radish', '/game/images/roots/radish.png' );
+		this.load.image( 'beets', '/game/images/roots/beets.png' );
+		this.load.image( 'carrot', '/game/images/roots/carrot.png' );
+		this.load.image( 'corn', '/game/images/seeds/corn3.png' );
+		this.load.image( 'sunflower', '/game/images/seeds/sunflowerseeds.png' );
+		this.load.image( 'fruit', '/game/images/fruit.png' );
+		this.load.image( 'leaves', '/game/images/leaves.png' );
+		this.load.image( 'seeds', '/game/images/seeds.png' );
+		this.load.image( 'circle', '/game/images/Circle.png');
+
+
+		this.load.spritesheet( 'chapter1Button', '/game/images/spritesheets/button_sprite_sheet.png', 193, 71 );
+		
+		this.load.audio( 'start_ding', '/game/audio/select.mp3' );
+	},
+
+	create: function () {
+		this.preloadBar.cropEnabled = false;
+	},
+
+	update: function () {
+		if( this.cache.isSoundDecoded( 'start_ding' ) && this.ready == false )
+		{
+			this.ready = true;
+			this.state.start( 'start_menu' );
+		}
+	},
+
+	render: function () {
+
+	}
+};

@@ -1,0 +1,27 @@
+var GardenAdventure = {};
+
+GardenAdventure.boot = function( game ) {};
+
+GardenAdventure.boot.prototype = {
+	
+	preload: function() {
+		this.load.image( 'preloaderBar', '/game/images/loader_bar.png' );
+		this.load.image( 'titleimage', '/game/images/TitleImage.png' );
+	},
+
+	create: function() {
+		this.input.maxPointers = 1;
+		this.stage.disableVisibilityChange = false;
+		this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+		this.scale.minWidth = 480;
+		this.scale.minHeight = 270;
+		this.scale.pageAlignHorizontally = true;
+		this.scale.pageAlignVertically = true;
+		this.stage.forceLandscape = true;
+
+		this.input.addPointer();
+		this.stage.backgroundColor = '#45E806';
+
+		this.state.start( 'preloader' );
+	}
+};

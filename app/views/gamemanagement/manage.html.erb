@@ -1,0 +1,50 @@
+<div class="jumbotron">
+<h2>Game Management</h2>
+
+<br />
+
+ <div class="form-group">
+    <label for="chapter" class="col-lg-2 control-label"><h4>Chapter</h4></label>
+      <div class="col-lg-10">
+
+      <%= form_for(:chapter, :url => {:action => 'findchapter'}) do |f| %>
+
+        <%= f.collection_select(:chapter_number, Chapter.all, :id, :number_with_title, {:selected => @chapter_number.to_i}, { :onchange => "this.form.submit()", :class=>'form-control'}) %>
+      <br />
+
+
+    	<% end %>
+
+      </div>
+    </div>
+
+
+
+    <div class="form-group">
+      <label for="student" class="col-lg-2 control-label"><h4>Student</h4></label>
+      <div class="col-lg-10">
+      <%= form_for(:chapter, :url => {:action => 'game'}) do |f| %>
+<% if session[:type] == "instructor" %>
+<%= collection_select(:student_id, :id, Student.all.where(:instructor_id => session[:user_id], :active => true), :id, :student_id, {}, {:class=>'form-control'}) %>
+<%else%>
+<%= collection_select(:student_id, :id, Student.all, :id, :student_id, {}, {:class=>'form-control'}) %>
+<%end%>
+<%= hidden_field :chapter, :chapter_number, :value => @chapter_number %>
+
+      <div class="actions">
+      <br />  
+              <%= submit_tag("Start Game! ", :class => "btn btn-success") %> 
+
+      </div>
+
+      <% end %>
+      </div>
+    </div>
+
+<br />  
+<br />  
+      <label for="student" class="col-lg-2 control-label">
+<%= link_to("<< Back to  Menu", {:controller => :menu, :action => :menu}, :class => "btn btn-primary") %>
+      </label>
+    </div>
+

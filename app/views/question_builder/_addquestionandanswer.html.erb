@@ -1,0 +1,55 @@
+  <form role="form" summary="Add possile answer fields">
+
+  
+  <div class="form-group">
+    <%= f.label(:question_title, "Question Text: ") %>
+     <%= f.text_field(:question_title) %>
+  </div>
+
+      <div class="form_line">
+      <%= f.label :question_image, "Question Image: " %>
+
+      <div class="form_controls">
+        <%= f.file_field :question_image %>
+        <%= f.hidden_field(:question_image_cache) %>
+        <%= f.hidden_field(:chapter, :value => params[:chapter_number]) %>
+
+
+
+      </div>
+
+    </div>
+
+
+
+
+<div class="form-group">
+    <%= f.label(:answer_title, "Answer Text: ") %>
+     <%= f.text_field(:answer_title) %>
+  </div>
+
+      <div class="form_line">
+      <%= f.label :answer_image, "Answer Image: " %>
+
+      <div class="form_controls">
+        <%= f.file_field :answer_image %>
+        <%= f.hidden_field(:answer_image_cache) %>
+
+
+
+      </div>
+
+    </div>
+<p></p>
+
+
+
+
+
+  <div class="form-buttons">
+        <%= submit_tag("Save Question", :class => "btn btn-success") %>
+        <strong>Please only click save once. It can take time to upload.</strong>
+  </div>
+
+
+</form>

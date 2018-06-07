@@ -1,0 +1,16 @@
+<form role="form" summary="Instructor form fields">
+  <div class="form-group">
+    <%= f.label(:username, "Username") %>
+    <%= f.text_field(:username) %>
+  </div>
+  
+  <div class="form-group">
+    <%= f.label(:email, "Email") %>
+     <%= f.text_field(:email) %>
+  </div>
+
+
+  <div class="form-buttons">
+        <%= submit_tag("Submit Changes", :class => "btn btn-success") %>
+  </div>
+</form>

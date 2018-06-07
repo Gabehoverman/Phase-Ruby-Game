@@ -1,0 +1,238 @@
+GardenAdventure.chapter_1 = function ( game ) {
+	this.chapter1BG;
+	this.questionList;
+	this.currentQuestion;
+	this.playerAnswers;
+	this.firstChoice;
+	this.secondChoice;
+	this.thirdChoice;
+	this.fourthChoice;
+	this.currentQuestionNumber;
+	this.playerScore;
+};
+function onDragStart(sprite, pointer) {
+	result = "Dragging: "+sprite.key;
+}
+
+function onDragStop(sprite, pointer) {
+	result = sprite.key + pointer.x + pointer.y;
+}
+
+function checkOverlap(spriteA, spriteB) {
+	var boundsA = spriteA.getBounds();
+	var boundsB = spriteB.getBounds();
+
+	return Phaser.Rectangle.intersects(boundsA,boundsB);
+}
+	var playerScore = 0;
+	var score;
+	var firstChoice;
+	var secondChoice;
+	var thirdChoice;
+	var fourthChoice
+	var fifthChoice;
+	var sixthChoice;
+	var seedbag;
+	var mascot;
+
+GardenAdventure.chapter_1.prototype = {
+
+	init: function ( questions ) {
+		questionList = questions;
+	},
+
+	create: function () {
+		chapter1BG = this.add.image( 0, 0, 'titleBG' );
+
+		responsiveVoice.speak( questionList[0].question_desc, "US English Male" );
+		currentQuestion = this.add.text( this.world.centerX - 250, this.world.centerY - 200, questionList[0].question_desc );
+		playerScore = 0;
+
+
+		score = this.add.text(16,16,'Score: 0 ',{fontSize: '56px', fill: '#000'});
+		firstChoice = this.add.sprite( this.world.centerX - 750, this.world.centerY, 'melonSlice' );
+		secondChoice = this.add.sprite( this.world.centerX - 200, this.world.centerY, 'corn' );
+		thirdChoice = this.add.sprite( this.world.centerX + 350, this.world.centerY, 'romaine' );
+		fourthChoice = this.add.sprite( this.world.centerX + 350, this.world.centerY - 300, 'cali');
+		fifthChoice = this.add.sprite( this.world.centerX - 200, this.world.centerY -300, 'tomato');
+		sixthChoice = this.add.sprite( this.world.centerX - 750, this.world.centerY - 300, 'broccoli');
+		mascot = this.add.sprite (this.world.centerX + 350, this.world.centerY + 550, 'mascot');
+		mascot.scale.setTo(.2,.2);
+		mascot.inputEnabled=true;
+
+		secondChoice.scale.setTo(2.3,2.3);
+
+		firstChoice.inputEnabled = true;
+		secondChoice.inputEnabled = true;
+		thirdChoice.inputEnabled = true;
+		fourthChoice.inputEnabled = true;
+		fifthChoice.inputEnabled = true;
+		sixthChoice.inputEnabled = true;
+
+		firstChoice.input.enableDrag();
+		secondChoice.input.enableDrag();
+		thirdChoice.input.enableDrag();
+		fourthChoice.input.enableDrag();
+		fifthChoice.input.enableDrag();
+		sixthChoice.input.enableDrag();
+
+		mascot.events.onInputDown.add(this.checkAnswer, this);
+		//firstChoice.events.onInputDown.add( this.pickFirstChoice, this );
+		//secondChoice.events.onInputDown.add( this.pickSecondChoice, this );
+		//thirdChoice.events.onInputDown.add( this.pickThirdChoice, this );
+		//fourthChoice.events.onInputDown.add( this.pickFourthChoice, this);
+
+		currentQuestionNumber = 1;
+
+		playerAnswers = [ '', '', '' ];
+
+		seedimage = this.add.image( this.world.centerX - 200, this.world.centerY + 600, 'seeds' );
+		seedimage.scale.setTo(0.3,0.3);
+
+		seedbag = this.add.sprite(this.world.centerX -200, this.world.centerY + 600,'seeds');
+		seedbag.scale.setTo(0.3,0.3);
+
+
+
+	},
+
+	pickFirstChoice: function () {
+		//alert( 'Watermelon was chosen!' ); #seed fruit leaves
+		playerAnswers[ currentQuestionNumber - 1 ] = 'melonSlice';
+
+
+		this.nextQuestion();
+	},
+
+	pickSecondChoice: function () {
+		//alert( 'Corn was chosen!' );
+		playerAnswers[ currentQuestionNumber - 1 ] = 'corn';
+
+
+
+		this.nextQuestion();
+	},
+
+	pickThirdChoice: function () {
+		//alert( 'Romaine was chosen!' );
+		playerAnswers[ currentQuestionNumber - 1 ] = 'romaine';
+
+		this.nextQuestion();
+	},
+
+	pickFourthChoice: function() {
+		playerAnswers[ currentQuestionNumber - 1 ] = 'corn';
+
+		this.nextQuestion;
+	},
+
+	checkAnswer: function () {
+		responsiveVoice.speak("Thanks Partner!");
+		this.nextQuestion();
+		//this.state.start('results', true, false, playerAnswers, questionList);
+	},
+
+	nextQuestion: function () {
+		if( currentQuestionNumber == 1 )
+		{
+
+			responsiveVoice.speak( questionList[1].question_desc, "US English Male" );
+			currentQuestion.text = questionList[1].question_desc;
+
+			fruitimage = this.add.image( this.world.centerX - 200, this.world.centerY+600, 'fruit' );
+			fruitimage.scale.setTo(0.3,0.3);
+
+		}
+		else if( currentQuestionNumber == 2 )
+		{
+			responsiveVoice.speak( questionList[2].question_desc, "US English Male" );
+			currentQuestion.text = questionList[2].question_desc;
+			leavesimage = this.add.image( this.world.centerX - 200, this.world.centerY+600, 'leaves' );
+			leavesimage.scale.setTo(0.3,0.3);
+
+		}
+		else if( currentQuestionNumber == 3 )
+		{
+			this.state.start( 'results', true, false, playerAnswers, questionList, playerScore );
+		}
+
+		currentQuestionNumber++;
+	},
+
+	update: function () {
+		if (checkOverlap(firstChoice, seedbag))
+		{
+			firstChoice.kill();
+			firstChoice = this.add.sprite(0,0,'melonslice');
+			firstChoice.kill();
+			playerAnswers[ currentQuestionNumber - 1 ] += 'melonslice'+', ';
+			if (questionList[currentQuestionNumber -1].correct_answer == 'fruit')
+			{
+				playerScore++;
+				score.text = 'Score: ' + playerScore;
+			}
+		}
+		if (checkOverlap(secondChoice, seedbag))
+		{
+			secondChoice.kill();
+			secondChoice = this.add.sprite(0,0,'corn');
+			secondChoice.kill();
+			playerAnswers[ currentQuestionNumber - 1 ] += 'corn'+', ';
+			if (questionList[currentQuestionNumber -1].correct_answer == 'seeds')
+			{
+				playerScore++;
+				score.text = 'Score: ' + playerScore;
+			}
+		}
+		if (checkOverlap(thirdChoice, seedbag))
+		{
+			thirdChoice.kill();
+			thirdChoice = this.add.sprite(0,0,'romaine');
+			thirdChoice.kill();
+			playerAnswers[ currentQuestionNumber - 1 ] += 'romaine'+', ';
+			if (questionList[currentQuestionNumber -1].correct_answer == 'leaves')
+			{
+				playerScore++;
+				score.text = 'Score: ' + playerScore;
+			}
+		}
+		if (checkOverlap(fourthChoice, seedbag))
+		{
+			fourthChoice.kill();
+			fourthChoice = this.add.sprite(0,0,'cali');
+			fourthChoice.kill();
+			playerAnswers[ currentQuestionNumber - 1 ] += 'califlower'+', ';
+			if (questionList[currentQuestionNumber -1].correct_answer == 'leaves')
+			{
+				playerScore++;
+				score.text = 'Score: ' + playerScore;
+			}
+		}
+		if (checkOverlap(fifthChoice, seedbag))
+		{
+			fifthChoice.kill();
+			fifthChoice = this.add.sprite(0,0,'tomato');
+			fifthChoice.kill();
+			playerAnswers[ currentQuestionNumber - 1 ] += 'tomato'+', ';
+			if (questionList[currentQuestionNumber -1].correct_answer == 'fruit')
+			{
+				playerScore++;
+				score.text = 'Score: ' + playerScore;
+			}
+		}
+		if (checkOverlap(sixthChoice, seedbag))
+		{
+			sixthChoice.kill();
+			sixthChoice = this.add.sprite(0,0,'broccoli');
+			sixthChoice.kill();
+			playerAnswers[ currentQuestionNumber - 1 ] += 'broccoli'+', ';
+			if (questionList[currentQuestionNumber -1].correct_answer == 'leaves')
+			{
+				playerScore++;
+				score.text = 'Score: ' + playerScore;
+
+			}
+		}
+	}
+
+};

@@ -1,0 +1,30 @@
+	<form role="form" summary="Add possile answer fields">
+
+  
+  <div class="form-group">
+    <%= f.label(:title, "Answer Text: ") %>
+     <%= f.text_field(:title) %>
+  </div>
+
+      <div class="form_line">
+      <%= f.label :image, "Answer Image: " %>
+
+      <div class="form_controls">
+        <%= f.file_field :image %>
+        <%= f.hidden_field(:image_cache) %>
+        <%= f.hidden_field(:isanswer, :value => true )%>
+        <%= f.hidden_field(:chapter_id, :value => params[:chapter_number]) %>
+
+
+
+      </div>
+
+    </div>
+<p></p>
+
+  <div class="form-buttons">
+        <%= submit_tag("Add Answer", :class => "btn btn-success") %>
+  </div>
+</form>
+
+

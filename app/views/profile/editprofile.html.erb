@@ -1,0 +1,17 @@
+
+
+<div id="new_student" class="container">
+
+    <h2>Edit Profile</h2>
+    <%= form_for(:instructor, :url => {:action => :change, :cpw => false}) do |f| %>
+
+      <%= render(:partial => "form", :locals => {:f => f}) %>
+
+      <% end %>
+  </div>
+
+
+<br />
+<%= link_to("<< Back to  Profile", {:controller => :profile, :action => :profile}, :class => "btn btn-primary") %>
+
+<br />

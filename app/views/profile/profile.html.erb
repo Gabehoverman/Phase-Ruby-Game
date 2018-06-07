@@ -1,0 +1,21 @@
+
+<!-- <div class="jumbotron">
+ --><h2>Profile</h2>
+<p>
+  <br />
+    <strong> <%='Welcome, '+@user.username %> </strong>
+     <br />
+    <strong> <%= 'Email:  '+@user.email %> </strong>
+     <br />
+
+</p>
+
+<%= link_to("Edit Account Info", {:controller => :profile, :action => :verify, :cpw => false}, :class => "btn btn-success btn-xs") %>
+<br />
+<%= link_to("Change Password", {:controller => :profile, :action => :verify, :cpw => true}, :class => "btn btn-warning btn-xs") %>   
+<br />
+<br />
+
+<!-- <div/>
+ -->
+<%= link_to("<< Back to  Menu", {:controller => :menu, :action => :menu}, :class => "btn btn-primary") %>

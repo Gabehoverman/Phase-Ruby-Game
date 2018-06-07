@@ -1,0 +1,6 @@
+Hi <%= @instructor.username %>,
+
+Thanks for registering! To confirm your registration click the URL below.
+
+<%="http://immense-citadel-9369.herokuapp.com/password_resets/confirm/" +@instructor.confirm_token %>
+

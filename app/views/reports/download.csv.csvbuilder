@@ -1,0 +1,54 @@
+header = Array.new
+@parent_columns.each do |column_name| 
+  header << column_name.humanize 
+end 
+
+if @child_columns
+    i = 0
+    while i < @max_children do 
+      @child_columns.each do |column_name| 
+        header << "Child #{i+1} " + column_name.humanize 
+      end
+      i += 1
+    end
+end
+
+csv << header.flatten
+
+@parents.each do |parent|
+
+  parent_record = Array.new
+
+  parent_record << parent.attributes.values_at(*@parent_columns)
+
+## NOTE: Here is the answer
+
+if @child_columns
+  if parent.childs.first.nil?
+    i = 0
+    while i < @max_children do 
+        @child_columns.each do |column_name|
+          parent_record << "-"
+        end
+      i += 1
+    end
+  elsif !parent.childs.first.nil?
+    how_many_blanks = @max_children - parent.childs.length
+    parent.childs.each do |child| 
+      @child_columns.each do |child_column|
+        parent_record << child.attributes.values_at(*child_column)
+      end
+    end
+    i = 0
+    while i < how_many_blanks do 
+        @child_columns.each do |column_name|
+          parent_record << "-"
+        end
+      i += 1
+    end
+  end
+end
+
+  csv << parent_record.flatten
+
+end 
